@@ -59,6 +59,7 @@ extern byte textColor;
 extern bool laserEnabled;
 extern byte displayMode;
 extern bool hqRes;
+extern bool gainMode;
 extern byte leptonVersion;
 extern byte leptonShutter;
 extern boolean mlx90614Version;

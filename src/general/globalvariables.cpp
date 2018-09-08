@@ -91,6 +91,9 @@ byte displayMode;
 //Resolution, V2 only
 bool hqRes;
 
+//Gain mode, Lepton3.5 only
+bool gainMode;
+
 //FLIR Lepton sensor version
 byte leptonVersion;
 //FLIR Lepton Shutter mode

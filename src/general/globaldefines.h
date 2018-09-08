@@ -23,8 +23,8 @@ extern "C" {
 /*################# PUBLIC CONSTANTS, VARIABLES & DATA TYPES ##################*/
 
 //Current firmware version
-#define Version 	"Firmware 2.46 from 17.04.2018"
-#define fwVersion 	246
+#define Version 	"Firmware 2.47 from 08.09.2018"
+#define fwVersion 	247
 
 //Pins
 #define pin_button        2
@@ -111,6 +111,10 @@ extern "C" {
 #define hotColdColor_green 3
 #define hotColdColor_blue  4
 
+//Lepton3.5 Gain mode
+#define lepton_3_5_gain_high 0
+#define lepton_3_5_gain_low  1
+
 //EEPROM registers
 #define eeprom_leptonVersion    100
 #define eeprom_tempFormat       101
@@ -184,6 +188,7 @@ extern "C" {
 #define eeprom_minMax1Comp      172 //4 Byte (172-175)
 #define eeprom_minMax2Comp      176 //4 Byte (176-179)
 #define eeprom_minMax3Comp      180 //4 Byte (180-183)
+#define eeprom_lepton_3_5_gain  184
 #define eeprom_fwVersion        250
 #define eeprom_setValue         200
 

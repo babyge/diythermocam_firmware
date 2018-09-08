@@ -17,8 +17,8 @@ This guide should work on **all common operating systems** (**Windows, Linux & M
 
 **Download** and **install** the following programs:
 
-1. **[Arduino 1.8.5+](https://www.arduino.cc/en/Main/Software)**
-2. **[Teensyduino 1.41+](https://www.pjrc.com/teensy/td_download.html)**
+1. **[Arduino 1.8.6+](https://www.arduino.cc/en/Main/Software)**
+2. **[Teensyduino 1.43+](https://www.pjrc.com/teensy/td_download.html)**
 3. **[Sloeber Eclipse](https://github.com/Sloeber/arduino-eclipse-plugin/releases/tag/4_2)**
 
 Then **clone this repo** to a path without empty spaces (f. ex. "C:\Sandbox\DIYThermocam_Firmware\") with `git clone https://github.com/maxritter/diythermocam_firmware.git`.
@@ -30,7 +30,6 @@ Go to Windows -> Preferences -> Arduino and **set the Private Library Path** to 
 **Import the project** with File -> Import -> General -> Existing Projects into Workspace, select the root directory of this repo and click Finish.
 
 Now you should be able to build the project with Arduino -> Verify and upload it to the Thermocam with Arduino -> Upload Sketch. Have fun!
-
 
 ----------
 

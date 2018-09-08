@@ -1,17 +1,17 @@
 /*
-*
-* MAIN MENU - Display the main menu with icons
-*
-* DIY-Thermocam Firmware
-*
-* GNU General Public License v3.0
-*
-* Copyright by Max Ritter
-*
-* http://www.diy-thermocam.net
-* https://github.com/maxritter/DIY-Thermocam
-*
-*/
+ *
+ * MAIN MENU - Display the main menu with icons
+ *
+ * DIY-Thermocam Firmware
+ *
+ * GNU General Public License v3.0
+ *
+ * Copyright by Max Ritter
+ *
+ * http://www.diy-thermocam.net
+ * https://github.com/maxritter/DIY-Thermocam
+ *
+ */
 
 /*################################# INCLUDES ##################################*/
 
@@ -39,7 +39,8 @@
 /*######################## PUBLIC FUNCTION BODIES #############################*/
 
 /* Draws the background in the main menu */
-void mainMenuBackground() {
+void mainMenuBackground()
+{
 	display_setColor(120, 120, 120);
 	display_fillRoundRect(6, 6, 314, 234);
 	display_setColor(200, 200, 200);
@@ -50,7 +51,8 @@ void mainMenuBackground() {
 }
 
 /* Draws the content of the selection menu*/
-void drawSelectionMenu() {
+void drawSelectionMenu()
+{
 	//Buttons
 	buttons_deleteAllButtons();
 	buttons_setTextFont(bigFont);
@@ -65,7 +67,8 @@ void drawSelectionMenu() {
 }
 
 /* Draws the title in the main menu */
-void mainMenuTitle(char* title) {
+void mainMenuTitle(char* title)
+{
 	display_setFont(bigFont);
 	display_setBackColor(120, 120, 120);
 	display_setColor(VGA_WHITE);
@@ -73,7 +76,8 @@ void mainMenuTitle(char* title) {
 }
 
 /* Draws the current selection in the menu */
-void mainMenuSelection(char* selection) {
+void mainMenuSelection(char* selection)
+{
 	//Clear the old content
 	display_setColor(VGA_WHITE);
 	display_fillRect(66, 58, 257, 111);
@@ -84,16 +88,17 @@ void mainMenuSelection(char* selection) {
 }
 
 /* Asks the user if he really wants to enter mass storage mode */
-bool massStoragePrompt() {
+bool massStoragePrompt()
+{
 	//Title & Background
 	drawTitle((char*) "USB File Transfer");
 	display_setColor(VGA_BLACK);
 	display_setFont(smallFont);
 	display_setBackColor(200, 200, 200);
-	display_print((char*)"Do you want to enter mass storage", CENTER, 65);
-	display_print((char*)"to transfer files to the PC?", CENTER, 85);
-	display_print((char*)"Do not use this for FW updates", CENTER, 105);
-	display_print((char*)"or for the USB serial connection.", CENTER, 125);
+	display_print((char*) "Do you want to enter mass storage", CENTER, 65);
+	display_print((char*) "to transfer files to the PC?", CENTER, 85);
+	display_print((char*) "Do not use this for FW updates", CENTER, 105);
+	display_print((char*) "or for the USB serial connection.", CENTER, 125);
 	//Draw the buttons
 	buttons_deleteAllButtons();
 	buttons_setTextFont(bigFont);
@@ -102,18 +107,23 @@ bool massStoragePrompt() {
 	buttons_drawButtons();
 	buttons_setTextFont(smallFont);
 	//Wait for touch release
-	while (touch_touched());
+	while (touch_touched())
+		;
 	//Touch handler
-	while (true) {
+	while (true)
+	{
 		//If touch pressed
-		if (touch_touched() == true) {
+		if (touch_touched() == true)
+		{
 			int pressedButton = buttons_checkButtons(true);
 			//YES
-			if (pressedButton == 0) {
+			if (pressedButton == 0)
+			{
 				return true;
 			}
 			//NO
-			if (pressedButton == 1) {
+			if (pressedButton == 1)
+			{
 				return false;
 			}
 		}
@@ -121,18 +131,19 @@ bool massStoragePrompt() {
 }
 
 /* Calibration Repeat Choose */
-bool calibrationRepeat() {
+bool calibrationRepeat()
+{
 	//Title & Background
 	mainMenuBackground();
-	mainMenuTitle((char*)"Bad Calibration");
+	mainMenuTitle((char*) "Bad Calibration");
 	display_setColor(VGA_BLACK);
 	display_setFont(bigFont);
 	display_setBackColor(200, 200, 200);
-	display_print((char*)"Try again?", CENTER, 66);
+	display_print((char*) "Try again?", CENTER, 66);
 	display_setFont(smallFont);
 	display_setBackColor(120, 120, 120);
 	display_setColor(VGA_WHITE);
-	display_print((char*)"Use different calibration objects", CENTER, 201);
+	display_print((char*) "Use different calibration objects", CENTER, 201);
 	//Draw the buttons
 	buttons_deleteAllButtons();
 	buttons_setTextFont(bigFont);
@@ -140,16 +151,20 @@ bool calibrationRepeat() {
 	buttons_addButton(15, 106, 140, 55, (char*) "No");
 	buttons_drawButtons();
 	//Touch handler
-	while (true) {
+	while (true)
+	{
 		//If touch pressed
-		if (touch_touched() == true) {
+		if (touch_touched() == true)
+		{
 			int pressedButton = buttons_checkButtons(true);
 			//YES
-			if (pressedButton == 0) {
+			if (pressedButton == 0)
+			{
 				return true;
 			}
 			//NO
-			if (pressedButton == 1) {
+			if (pressedButton == 1)
+			{
 				return false;
 			}
 		}
@@ -157,16 +172,18 @@ bool calibrationRepeat() {
 }
 
 /* Calibration*/
-void calibrationScreen(bool firstStart) {
+void calibrationScreen(bool firstStart)
+{
 	//Normal mode
-	if (firstStart == false) {
+	if (firstStart == false)
+	{
 		mainMenuBackground();
-		mainMenuTitle((char*)"Calibrating..");
+		mainMenuTitle((char*) "Calibrating..");
 		display_setColor(VGA_BLACK);
 		display_setBackColor(200, 200, 200);
 		display_setFont(smallFont);
-		display_print((char*)"Point the camera to different", CENTER, 63);
-		display_print((char*)"hot and cold objects in the area.", CENTER, 96);
+		display_print((char*) "Point the camera to different", CENTER, 63);
+		display_print((char*) "hot and cold objects in the area.", CENTER, 96);
 		buttons_deleteAllButtons();
 		buttons_setTextFont(bigFont);
 		buttons_addButton(90, 188, 140, 40, (char*) "Abort");
@@ -175,7 +192,8 @@ void calibrationScreen(bool firstStart) {
 		display_print((char*) "Status:  0%", CENTER, 140);
 	}
 	//First start
-	else {
+	else
+	{
 		display_fillScr(200, 200, 200);
 		display_setFont(bigFont);
 		display_setBackColor(200, 200, 200);
@@ -186,14 +204,16 @@ void calibrationScreen(bool firstStart) {
 }
 
 /* Menu to add or remove temperature points to the thermal image */
-bool tempPointsMenu() {
+bool tempPointsMenu()
+{
 	//Still in warmup, do not add points
-	if (calStatus == cal_warmup) {
+	if (calStatus == cal_warmup)
+	{
 		showFullMessage((char*) "Please wait for sensor warmup", true);
 		delay(1000);
 		return false;
 	}
-redraw:
+	redraw:
 	//Background
 	mainMenuBackground();
 	//Title
@@ -207,24 +227,29 @@ redraw:
 	buttons_addButton(15, 188, 120, 40, (char*) "Back");
 	buttons_drawButtons();
 	//Save the current position inside the menu
-	while (true) {
+	while (true)
+	{
 		//Touch screen pressed
-		if (touch_touched() == true) {
+		if (touch_touched() == true)
+		{
 			int pressedButton = buttons_checkButtons(true);
 			//Add
-			if (pressedButton == 0) {
+			if (pressedButton == 0)
+			{
 				tempPointFunction(false);
 				goto redraw;
 			}
 			//Remove
-			if (pressedButton == 1) {
+			if (pressedButton == 1)
+			{
 				tempPointFunction(true);
 				goto redraw;
 			}
 			//Clear
-			if (pressedButton == 2) {
+			if (pressedButton == 2)
+			{
 				clearTempPoints();
-				showFullMessage((char*)"All points cleared", true);
+				showFullMessage((char*) "All points cleared", true);
 				delay(1000);
 				goto redraw;
 			}
@@ -236,10 +261,12 @@ redraw:
 }
 
 /* Select the color for the live mode string */
-void hotColdColorMenuString(int pos) {
+void hotColdColorMenuString(int pos)
+{
 	char* text = (char*) "";
-	switch (pos) {
-		//White
+	switch (pos)
+	{
+	//White
 	case 0:
 		text = (char*) "White";
 		break;
@@ -264,7 +291,8 @@ void hotColdColorMenuString(int pos) {
 }
 
 /* Menu to display the color in hot/cold color mode */
-bool hotColdColorMenu() {
+bool hotColdColorMenu()
+{
 	//Save the current position inside the menu
 	byte hotColdColorMenuPos;
 	if (hotColdMode == hotColdMode_hot)
@@ -282,12 +310,15 @@ bool hotColdColorMenu() {
 	//Draw the current item
 	hotColdColorMenuString(hotColdColorMenuPos);
 	//Save the current position inside the menu
-	while (true) {
+	while (true)
+	{
 		//Touch screen pressed
-		if (touch_touched() == true) {
+		if (touch_touched() == true)
+		{
 			int pressedButton = buttons_checkButtons(true);
 			//SELECT
-			if (pressedButton == 3) {
+			if (pressedButton == 3)
+			{
 				//Save
 				hotColdColor = hotColdColorMenuPos;
 				//Write to EEPROM
@@ -298,14 +329,16 @@ bool hotColdColorMenu() {
 			if (pressedButton == 2)
 				return false;
 			//BACKWARD
-			else if (pressedButton == 0) {
+			else if (pressedButton == 0)
+			{
 				if (hotColdColorMenuPos > 0)
 					hotColdColorMenuPos--;
 				else if (hotColdColorMenuPos == 0)
 					hotColdColorMenuPos = 4;
 			}
 			//FORWARD
-			else if (pressedButton == 1) {
+			else if (pressedButton == 1)
+			{
 				if (hotColdColorMenuPos < 4)
 					hotColdColorMenuPos++;
 				else if (hotColdColorMenuPos == 4)
@@ -318,49 +351,63 @@ bool hotColdColorMenu() {
 }
 
 /* Touch handler for the hot & cold limit changer menu */
-void hotColdChooserHandler() {
+void hotColdChooserHandler()
+{
 	//Help variables
 	char margin[14];
 
 	//Display level as temperature
-	if (!tempFormat) {
+	if (!tempFormat)
+	{
 		sprintf(margin, "Limit: %dC", hotColdLevel);
 	}
-	else {
+	else
+	{
 		sprintf(margin, "Limit: %dF", hotColdLevel);
 	}
 	display_print(margin, CENTER, 153);
 
 	//Touch handler
-	while (true) {
-	waitTouch:
+	while (true)
+	{
+		waitTouch:
 
 		//If touch pressed
-		if (touch_touched() == true) {
+		if (touch_touched() == true)
+		{
 			int pressedButton = buttons_checkButtons(true);
 			//RESET
-			if (pressedButton == 0) {
+			if (pressedButton == 0)
+			{
 				if (hotColdMode == hotColdMode_cold)
-					hotColdLevel = (int16_t)round(calFunction(0.2 * (maxValue - minValue) + minValue));
+					hotColdLevel = (int16_t) round(
+							calFunction(
+									0.2 * (maxValue - minValue) + minValue));
 				if (hotColdMode == hotColdMode_hot)
-					hotColdLevel = (int16_t)round(calFunction(0.8 * (maxValue - minValue) + minValue));
+					hotColdLevel = (int16_t) round(
+							calFunction(
+									0.8 * (maxValue - minValue) + minValue));
 			}
 			//SELECT
-			else if (pressedButton == 1) {
+			else if (pressedButton == 1)
+			{
 				//Save to EEPROM
-				EEPROM.write(eeprom_hotColdLevelHigh, (hotColdLevel & 0xFF00) >> 8);
+				EEPROM.write(eeprom_hotColdLevelHigh,
+						(hotColdLevel & 0xFF00) >> 8);
 				EEPROM.write(eeprom_hotColdLevelLow, hotColdLevel & 0x00FF);
 				break;
 			}
 			//MINUS
-			else if (pressedButton == 2) {
+			else if (pressedButton == 2)
+			{
 				if (hotColdLevel > round(calFunction(minValue)))
 					hotColdLevel--;
 				else
 					goto waitTouch;
 			}
 			//PLUS
-			else if (pressedButton == 3) {
+			else if (pressedButton == 3)
+			{
 				if (hotColdLevel < round(calFunction(maxValue)))
 					hotColdLevel++;
 				else
@@ -373,10 +420,12 @@ void hotColdChooserHandler() {
 			display_drawBitmap(80, 48, 160, 120, smallBuffer, 1);
 
 			//Display level as temperature
-			if (!tempFormat) {
+			if (!tempFormat)
+			{
 				sprintf(margin, "Limit: %dC", hotColdLevel);
 			}
-			else {
+			else
+			{
 				sprintf(margin, "Limit: %dF", hotColdLevel);
 			}
 			display_print(margin, CENTER, 153);
@@ -385,7 +434,8 @@ void hotColdChooserHandler() {
 }
 
 /* Select the limit in hot/cold mode */
-void hotColdChooser() {
+void hotColdChooser()
+{
 	//Background & title
 	mainMenuBackground();
 	mainMenuTitle((char*) "Set Limit");
@@ -409,16 +459,19 @@ void hotColdChooser() {
 	changeTextColor();
 
 	//Find min and max values
-	if ((autoMode) && (!limitsLocked)) {
+	if ((autoMode) && (!limitsLocked))
+	{
 		lepton_getRawValues();
 		limitValues();
 	}
 
 	//Calculate initial level
 	if (hotColdMode == hotColdMode_cold)
-		hotColdLevel = (int16_t)round(calFunction(0.2 * (maxValue - minValue) + minValue));
+		hotColdLevel = (int16_t) round(
+				calFunction(0.2 * (maxValue - minValue) + minValue));
 	if (hotColdMode == hotColdMode_hot)
-		hotColdLevel = (int16_t)round(calFunction(0.8 * (maxValue - minValue) + minValue));
+		hotColdLevel = (int16_t) round(
+				calFunction(0.8 * (maxValue - minValue) + minValue));
 
 	//Prepare the preview image
 	delay(10);
@@ -432,15 +485,17 @@ void hotColdChooser() {
 }
 
 /* Menu to display hot or cold areas */
-bool hotColdMenu() {
+bool hotColdMenu()
+{
 	//Still in warmup, do not add points
-	if (calStatus == cal_warmup) {
+	if (calStatus == cal_warmup)
+	{
 		showFullMessage((char*) "Please wait for sensor warmup", true);
 		delay(1000);
 		return false;
 	}
 
-redraw:
+	redraw:
 	//Background
 	mainMenuBackground();
 
@@ -457,12 +512,15 @@ redraw:
 	buttons_drawButtons();
 
 	//Save the current position inside the menu
-	while (true) {
+	while (true)
+	{
 		//Touch screen pressed
-		if (touch_touched() == true) {
+		if (touch_touched() == true)
+		{
 			int pressedButton = buttons_checkButtons(true);
 			//Hot
-			if (pressedButton == 0) {
+			if (pressedButton == 0)
+			{
 				//Set marker to hot
 				hotColdMode = hotColdMode_hot;
 
@@ -472,7 +530,8 @@ redraw:
 					hotColdChooser();
 
 				//Go back
-				else {
+				else
+				{
 					hotColdMode = hotColdMode_disabled;
 					goto redraw;
 				}
@@ -481,7 +540,8 @@ redraw:
 				break;
 			}
 			//Cold
-			if (pressedButton == 1) {
+			if (pressedButton == 1)
+			{
 				//Set marker to cold
 				hotColdMode = hotColdMode_cold;
 
@@ -491,7 +551,8 @@ redraw:
 					hotColdChooser();
 
 				//Go back
-				else {
+				else
+				{
 					hotColdMode = hotColdMode_disabled;
 					goto redraw;
 				}
@@ -500,7 +561,8 @@ redraw:
 				break;
 			}
 			//Disabled
-			if (pressedButton == 2) {
+			if (pressedButton == 2)
+			{
 				//Set marker to disabled
 				hotColdMode = hotColdMode_disabled;
 
@@ -528,9 +590,11 @@ redraw:
 }
 
 /* Switch the current preset menu item */
-void tempLimitsPresetSaveString(int pos) {
+void tempLimitsPresetSaveString(int pos)
+{
 	char* text = (char*) "";
-	switch (pos) {
+	switch (pos)
+	{
 	case 0:
 		text = (char*) "Temporary";
 		break;
@@ -548,7 +612,8 @@ void tempLimitsPresetSaveString(int pos) {
 }
 
 /* Menu to save the temperature limits to a preset */
-bool tempLimitsPresetSaveMenu() {
+bool tempLimitsPresetSaveMenu()
+{
 	//Save the current position inside the menu
 	byte menuPos = 1;
 	//Background
@@ -560,25 +625,31 @@ bool tempLimitsPresetSaveMenu() {
 	//Draw the current item
 	tempLimitsPresetSaveString(menuPos);
 	//Save the current position inside the menu
-	while (true) {
+	while (true)
+	{
 		//Touch screen pressed
-		if (touch_touched() == true) {
+		if (touch_touched() == true)
+		{
 			int pressedButton = buttons_checkButtons(true);
 			//SELECT
-			if (pressedButton == 3) {
+			if (pressedButton == 3)
+			{
 				uint8_t farray[4];
-				switch (menuPos) {
-					//Temporary
+				switch (menuPos)
+				{
+				//Temporary
 				case 0:
 					EEPROM.write(eeprom_minMaxPreset, minMax_temporary);
 					break;
 					//Preset 1
 				case 1:
-					EEPROM.write(eeprom_minValue1High, (minValue & 0xFF00) >> 8);
+					EEPROM.write(eeprom_minValue1High,
+							(minValue & 0xFF00) >> 8);
 					EEPROM.write(eeprom_minValue1Low, minValue & 0x00FF);
-					EEPROM.write(eeprom_maxValue1High, (maxValue & 0xFF00) >> 8);
+					EEPROM.write(eeprom_maxValue1High,
+							(maxValue & 0xFF00) >> 8);
 					EEPROM.write(eeprom_maxValue1Low, maxValue & 0x00FF);
-					floatToBytes(farray, (float)calComp);
+					floatToBytes(farray, (float) calComp);
 					for (int i = 0; i < 4; i++)
 						EEPROM.write(eeprom_minMax1Comp + i, (farray[i]));
 					EEPROM.write(eeprom_minMax1Set, eeprom_setValue);
@@ -586,11 +657,13 @@ bool tempLimitsPresetSaveMenu() {
 					break;
 					//Preset 2
 				case 2:
-					EEPROM.write(eeprom_minValue2High, (minValue & 0xFF00) >> 8);
+					EEPROM.write(eeprom_minValue2High,
+							(minValue & 0xFF00) >> 8);
 					EEPROM.write(eeprom_minValue2Low, minValue & 0x00FF);
-					EEPROM.write(eeprom_maxValue2High, (maxValue & 0xFF00) >> 8);
+					EEPROM.write(eeprom_maxValue2High,
+							(maxValue & 0xFF00) >> 8);
 					EEPROM.write(eeprom_maxValue2Low, maxValue & 0x00FF);
-					floatToBytes(farray, (float)calComp);
+					floatToBytes(farray, (float) calComp);
 					for (int i = 0; i < 4; i++)
 						EEPROM.write(eeprom_minMax2Comp + i, (farray[i]));
 					EEPROM.write(eeprom_minMax2Set, eeprom_setValue);
@@ -598,11 +671,13 @@ bool tempLimitsPresetSaveMenu() {
 					break;
 					//Preset 3
 				case 3:
-					EEPROM.write(eeprom_minValue3High, (minValue & 0xFF00) >> 8);
+					EEPROM.write(eeprom_minValue3High,
+							(minValue & 0xFF00) >> 8);
 					EEPROM.write(eeprom_minValue3Low, minValue & 0x00FF);
-					EEPROM.write(eeprom_maxValue3High, (maxValue & 0xFF00) >> 8);
+					EEPROM.write(eeprom_maxValue3High,
+							(maxValue & 0xFF00) >> 8);
 					EEPROM.write(eeprom_maxValue3Low, maxValue & 0x00FF);
-					floatToBytes(farray, (float)calComp);
+					floatToBytes(farray, (float) calComp);
 					for (int i = 0; i < 4; i++)
 						EEPROM.write(eeprom_minMax3Comp + i, (farray[i]));
 					EEPROM.write(eeprom_minMax3Set, eeprom_setValue);
@@ -612,14 +687,16 @@ bool tempLimitsPresetSaveMenu() {
 				return true;
 			}
 			//BACKWARD
-			else if (pressedButton == 0) {
+			else if (pressedButton == 0)
+			{
 				if (menuPos > 0)
 					menuPos--;
 				else if (menuPos == 0)
 					menuPos = 3;
 			}
 			//FORWARD
-			else if (pressedButton == 1) {
+			else if (pressedButton == 1)
+			{
 				if (menuPos < 3)
 					menuPos++;
 				else if (menuPos == 3)
@@ -635,7 +712,8 @@ bool tempLimitsPresetSaveMenu() {
 }
 
 /* Touch Handler for the limit chooser menu */
-bool tempLimitsManualHandler() {
+bool tempLimitsManualHandler()
+{
 
 	//Set both modes to false for the first time
 	bool minChange = false;
@@ -645,22 +723,24 @@ bool tempLimitsManualHandler() {
 	char minC[10];
 	char maxC[10];
 
-
 	//Touch handler
-	while (true) {
+	while (true)
+	{
 		//Set font & text color
 		display_setFont(smallFont);
 		display_setBackColor(VGA_TRANSPARENT);
 		changeTextColor();
 
 		//Update minimum & maximum
-		min = (int)round(calFunction(minValue));
-		max = (int)round(calFunction(maxValue));
-		if (tempFormat == tempFormat_celcius) {
+		min = (int) round(calFunction(minValue));
+		max = (int) round(calFunction(maxValue));
+		if (tempFormat == tempFormat_celcius)
+		{
 			sprintf(minC, "Min:%dC", min);
 			sprintf(maxC, "Max:%dC", max);
 		}
-		else {
+		else
+		{
 			sprintf(minC, "Min:%dF", min);
 			sprintf(maxC, "Max:%dF", max);
 		}
@@ -669,7 +749,8 @@ bool tempLimitsManualHandler() {
 		display_setFont(bigFont);
 
 		//If touch pressed
-		if (touch_touched() == true) {
+		if (touch_touched() == true)
+		{
 			int pressedButton;
 			//Change values continously and fast when the user holds the plus or minus button
 			if (minChange || maxChange)
@@ -678,16 +759,19 @@ bool tempLimitsManualHandler() {
 			else
 				pressedButton = buttons_checkButtons();
 			//RESET
-			if (pressedButton == 0) {
+			if (pressedButton == 0)
+			{
 				//Refresh min and max
 				delay(10);
 				lepton_getRawValues();
 				limitValues();
 			}
 			//SELECT
-			else if (pressedButton == 1) {
+			else if (pressedButton == 1)
+			{
 				//Leave the minimum or maximum change mode
-				if (minChange || maxChange) {
+				if (minChange || maxChange)
+				{
 					buttons_relabelButton(1, (char*) "OK", true);
 					buttons_relabelButton(2, (char*) "Min", true);
 					buttons_relabelButton(3, (char*) "Max", true);
@@ -697,7 +781,8 @@ bool tempLimitsManualHandler() {
 						maxChange = false;
 				}
 				//Go back
-				else {
+				else
+				{
 					if (tempLimitsPresetSaveMenu())
 						return true;
 					else
@@ -705,43 +790,53 @@ bool tempLimitsManualHandler() {
 				}
 			}
 			//DECREASE
-			else if (pressedButton == 2) {
+			else if (pressedButton == 2)
+			{
 				//In minimum change mode - decrease minimum temp
-				if ((minChange == true) && (maxChange == false)) {
+				if ((minChange == true) && (maxChange == false))
+				{
 					//Check if minimum is in range
-					if (min > -70) {
+					if (min > -70)
+					{
 						min--;
 						minValue = tempToRaw(min);
 					}
 				}
 				//Enter minimum change mode
-				else if ((minChange == false) && (maxChange == false)) {
+				else if ((minChange == false) && (maxChange == false))
+				{
 					buttons_relabelButton(1, (char*) "Back", true);
 					buttons_relabelButton(2, (char*) "-", true);
 					buttons_relabelButton(3, (char*) "+", true);
 					minChange = true;
 				}
 				//In maximum change mode - decrease maximum temp
-				else if ((minChange == false) && (maxChange == true)) {
+				else if ((minChange == false) && (maxChange == true))
+				{
 					//Check if maximum is bigger than minimum
-					if (max > (min + 1)) {
+					if (max > (min + 1))
+					{
 						max--;
 						maxValue = tempToRaw(max);
 					}
 				}
 			}
 			//INCREASE
-			else if (pressedButton == 3) {
+			else if (pressedButton == 3)
+			{
 				//In maximum change mode - increase maximum temp
-				if ((minChange == false) && (maxChange == true)) {
+				if ((minChange == false) && (maxChange == true))
+				{
 					//Check if maximum is in range
-					if (max < 380) {
+					if (max < 380)
+					{
 						max++;
 						maxValue = tempToRaw(max);
 					}
 				}
 				//Enter maximum change mode
-				else if ((minChange == false) && (maxChange == false)) {
+				else if ((minChange == false) && (maxChange == false))
+				{
 					buttons_relabelButton(1, (char*) "Back", true);
 					buttons_relabelButton(2, (char*) "-", true);
 					buttons_relabelButton(3, (char*) "+", true);
@@ -749,9 +844,11 @@ bool tempLimitsManualHandler() {
 
 				}
 				//In minimum change mode - increase minimum temp
-				else if ((minChange == true) && (maxChange == false)) {
+				else if ((minChange == true) && (maxChange == false))
+				{
 					//Check if minimum is smaller than maximum
-					if (min < (max - 1)) {
+					if (min < (max - 1))
+					{
 						min++;
 						minValue = tempToRaw(min);
 					}
@@ -769,8 +866,9 @@ bool tempLimitsManualHandler() {
 }
 
 /* Select the limits in Manual Mode*/
-void tempLimitsManual() {
-redraw:
+void tempLimitsManual()
+{
+	redraw:
 	//Background & title
 	mainMenuBackground();
 	mainMenuTitle((char*) "Temp. Limits");
@@ -803,9 +901,11 @@ redraw:
 }
 
 /* Switch the temperature limits preset string */
-void tempLimitsPresetsString(int pos) {
+void tempLimitsPresetsString(int pos)
+{
 	char* text = (char*) "";
-	switch (pos) {
+	switch (pos)
+	{
 	case 0:
 		text = (char*) "New";
 		break;
@@ -823,7 +923,8 @@ void tempLimitsPresetsString(int pos) {
 }
 
 /* Menu to save the temperature limits to a preset */
-bool tempLimitsPresets() {
+bool tempLimitsPresets()
+{
 	//Save the current position inside the menu
 	byte tempLimitsMenuPos = 0;
 	//Background
@@ -835,20 +936,24 @@ bool tempLimitsPresets() {
 	//Draw the current item
 	tempLimitsPresetsString(tempLimitsMenuPos);
 	//Save the current position inside the menu
-	while (true) {
+	while (true)
+	{
 		//Touch screen pressed
-		if (touch_touched() == true) {
+		if (touch_touched() == true)
+		{
 			int pressedButton = buttons_checkButtons(true);
 			//SELECT
-			if (pressedButton == 3) {
-				switch (tempLimitsMenuPos) {
-					//New
+			if (pressedButton == 3)
+			{
+				switch (tempLimitsMenuPos)
+				{
+				//New
 				case 0:
 					tempLimitsManual();
 					return true;
 					//Load Preset 1
 				case 1:
-					if(EEPROM.read(eeprom_minMax1Set) == eeprom_setValue)
+					if (EEPROM.read(eeprom_minMax1Set) == eeprom_setValue)
 						EEPROM.write(eeprom_minMaxPreset, minMax_preset1);
 					else
 					{
@@ -885,14 +990,16 @@ bool tempLimitsPresets() {
 				return true;
 			}
 			//BACKWARD
-			else if (pressedButton == 0) {
+			else if (pressedButton == 0)
+			{
 				if (tempLimitsMenuPos > 0)
 					tempLimitsMenuPos--;
 				else if (tempLimitsMenuPos == 0)
 					tempLimitsMenuPos = 3;
 			}
 			//FORWARD
-			else if (pressedButton == 1) {
+			else if (pressedButton == 1)
+			{
 				if (tempLimitsMenuPos < 3)
 					tempLimitsMenuPos++;
 				else if (tempLimitsMenuPos == 3)
@@ -907,25 +1014,95 @@ bool tempLimitsPresets() {
 	}
 }
 
+void changeGain()
+{
+	/* Generate menu */
+	drawTitle((char*) "Gain Mode");
+	buttons_deleteAllButtons();
+	buttons_setTextFont(smallFont);
+	buttons_addButton(20, 60, 130, 70, (char*) "-10C - +140C");
+	buttons_addButton(170, 60, 130, 70, (char*) "-10C - +450C");
+	buttons_addButton(20, 150, 280, 70, (char*) "Save");
+	buttons_drawButtons();
+	if (gainMode == lepton_3_5_gain_high)
+		buttons_setActive(0);
+	else
+		buttons_setActive(1);
+	//Touch handler
+	while (true)
+	{
+		//touch pressed
+		if (touch_touched() == true)
+		{
+			int pressedButton = buttons_checkButtons();
+			//High gain
+			if (pressedButton == 0)
+			{
+				if (gainMode == lepton_3_5_gain_low)
+				{
+					gainMode = lepton_3_5_gain_high;
+					buttons_setActive(0);
+					buttons_setInactive(1);
+				}
+			}
+			//Low gain
+			else if (pressedButton == 1)
+			{
+				if (gainMode == lepton_3_5_gain_high)
+				{
+					gainMode = lepton_3_5_gain_low;
+					buttons_setActive(1);
+					buttons_setInactive(0);
+				}
+			}
+			//Save
+			else if (pressedButton == 2)
+			{
+				//Change gain mode
+				if(gainMode == lepton_3_5_gain_low)
+				{
+					lepton_3_5_set_low_gain();
+				}
+				else
+				{
+					lepton_3_5_set_high_gain();
+				}
+
+				//Write new settings to EEPROM
+				EEPROM.write(eeprom_lepton_3_5_gain, gainMode);
+
+				//Trigger shutter
+				lepton_ffc(true, true);
+
+				break;
+			}
+		}
+	}
+}
+
 /* Temperature Limit Mode Selection */
-bool tempLimits() {
+bool tempLimits()
+{
 	//Do not show in visual mode
-	if (displayMode == displayMode_visual) {
+	if (displayMode == displayMode_visual)
+	{
 		showFullMessage((char*) "No use in visual mode", true);
 		delay(1000);
 		return false;
 	}
 
 	//Still in warmup, do not let the user do this
-	if (calStatus == cal_warmup) {
+	if (calStatus == cal_warmup)
+	{
 		showFullMessage((char*) "Please wait for sensor warmup", true);
 		delay(1000);
 		return false;
 	}
 
 	//Title & Background
+	redraw:
 	mainMenuBackground();
-	mainMenuTitle((char*)"Temp. Limits");
+	mainMenuTitle((char*) "Temp. Limits");
 
 	//Draw the buttons
 	buttons_deleteAllButtons();
@@ -933,17 +1110,24 @@ bool tempLimits() {
 	buttons_addButton(15, 47, 140, 120, (char*) "Auto");
 	buttons_addButton(165, 47, 140, 120, (char*) "Manual");
 	buttons_addButton(15, 188, 140, 40, (char*) "Back");
+	if (leptonVersion == leptonVersion_3_5_shutter)
+	{
+		buttons_addButton(165, 188, 140, 40, (char*) "Gain");
+	}
 	buttons_drawButtons();
 
 	//Touch handler
-	while (true) {
+	while (true)
+	{
 		//If touch pressed
-		if (touch_touched() == true) {
+		if (touch_touched() == true)
+		{
 			int pressedButton = buttons_checkButtons(true);
 			//AUTO
-			if (pressedButton == 0) {
+			if (pressedButton == 0)
+			{
 				//Show message
-				showFullMessage((char*)"Please wait..", true);
+				showFullMessage((char*) "Please wait..", true);
 
 				//Enable auto mode again and disable limits locked
 				autoMode = true;
@@ -959,7 +1143,8 @@ bool tempLimits() {
 				return true;
 			}
 			//MANUAL
-			if (pressedButton == 1) {
+			if (pressedButton == 1)
+			{
 				//Switch to manual FFC mode
 				if (leptonShutter == leptonShutter_auto)
 					lepton_ffcMode(false);
@@ -974,15 +1159,24 @@ bool tempLimits() {
 			//BACK
 			if (pressedButton == 2)
 				return false;
+			//GAIN
+			if ((leptonVersion == leptonVersion_3_5_shutter)
+					&& (pressedButton == 3))
+			{
+				changeGain();
+				goto redraw;
+			}
 		}
 	}
 }
 
 /* Switch the current display option item */
-void liveDispMenuString(int pos) {
+void liveDispMenuString(int pos)
+{
 	char* text = (char*) "";
-	switch (pos) {
-		//Battery
+	switch (pos)
+	{
+	//Battery
 	case 0:
 		if (batteryEnabled)
 			text = (char*) "Battery On";
@@ -1063,7 +1257,8 @@ void liveDispMenuString(int pos) {
 }
 
 /* Change the live display options */
-bool liveDispMenu() {
+bool liveDispMenu()
+{
 	//Save the current position inside the menu
 	static byte displayOptionsPos = 0;
 	//Background
@@ -1076,27 +1271,33 @@ bool liveDispMenu() {
 	buttons_relabelButton(3, (char*) "Switch", true);
 	//Draw the current item
 	liveDispMenuString(displayOptionsPos);
-	while (true) {
+	while (true)
+	{
 		//Touch screen pressed
-		if (touch_touched() == true) {
+		if (touch_touched() == true)
+		{
 			int pressedButton = buttons_checkButtons(true);
 			//SELECT
-			if (pressedButton == 3) {
+			if (pressedButton == 3)
+			{
 				changeDisplayOptions(&displayOptionsPos);
 			}
 			//BACK
-			if (pressedButton == 2) {
+			if (pressedButton == 2)
+			{
 				return false;
 			}
 			//BACKWARD
-			else if (pressedButton == 0) {
+			else if (pressedButton == 0)
+			{
 				if (displayOptionsPos > 0)
 					displayOptionsPos--;
 				else if (displayOptionsPos == 0)
 					displayOptionsPos = 8;
 			}
 			//FORWARD
-			else if (pressedButton == 1) {
+			else if (pressedButton == 1)
+			{
 				if (displayOptionsPos < 8)
 					displayOptionsPos++;
 				else if (displayOptionsPos == 8)
@@ -1109,9 +1310,11 @@ bool liveDispMenu() {
 }
 
 /* Switch the current color scheme item */
-void colorMenuString(int pos) {
+void colorMenuString(int pos)
+{
 	char* text = (char*) "";
-	switch (pos) {
+	switch (pos)
+	{
 	case colorScheme_arctic:
 		text = (char*) "Arctic";
 		break;
@@ -1174,9 +1377,11 @@ void colorMenuString(int pos) {
 }
 
 /* Choose the applied color scale */
-bool colorMenu() {
+bool colorMenu()
+{
 	//Do not show in visual mode
-	if (displayMode == displayMode_visual) {
+	if (displayMode == displayMode_visual)
+	{
 		showFullMessage((char*) "No use in visual mode", true);
 		delay(1000);
 		return false;
@@ -1192,12 +1397,15 @@ bool colorMenu() {
 	drawSelectionMenu();
 	//Draw the current item
 	colorMenuString(changeColorPos);
-	while (true) {
+	while (true)
+	{
 		//Touch screen pressed
-		if (touch_touched() == true) {
+		if (touch_touched() == true)
+		{
 			int pressedButton = buttons_checkButtons(true);
 			//SELECT
-			if (pressedButton == 3) {
+			if (pressedButton == 3)
+			{
 				changeColorScheme(&changeColorPos);
 				return true;
 			}
@@ -1205,14 +1413,16 @@ bool colorMenu() {
 			if (pressedButton == 2)
 				return false;
 			//BACKWARD
-			else if (pressedButton == 0) {
+			else if (pressedButton == 0)
+			{
 				if (changeColorPos > 0)
 					changeColorPos--;
 				else if (changeColorPos == 0)
 					changeColorPos = colorSchemeTotal - 1;
 			}
 			//FORWARD
-			else if (pressedButton == 1) {
+			else if (pressedButton == 1)
+			{
 				if (changeColorPos < (colorSchemeTotal - 1))
 					changeColorPos++;
 				else if (changeColorPos == (colorSchemeTotal - 1))
@@ -1225,7 +1435,8 @@ bool colorMenu() {
 }
 
 /* Choose the current display mode */
-bool modeMenu() {
+bool modeMenu()
+{
 	//Background
 	mainMenuBackground();
 	//Title
@@ -1238,14 +1449,17 @@ bool modeMenu() {
 	buttons_addButton(215, 45, 90, 122, (char*) "Combined");
 	buttons_addButton(15, 188, 120, 40, (char*) "Back");
 	buttons_drawButtons();
-	while (true) {
+	while (true)
+	{
 		//Touch screen pressed
-		if (touch_touched() == true) {
+		if (touch_touched() == true)
+		{
 			int pressedButton = buttons_checkButtons(true);
 			//Thermal
-			if (pressedButton == 0) {
+			if (pressedButton == 0)
+			{
 				//Show message
-				showFullMessage((char*)"Please wait..", true);
+				showFullMessage((char*) "Please wait..", true);
 
 				//Set camera resolution to save
 				camera_setSaveRes();
@@ -1257,17 +1471,18 @@ bool modeMenu() {
 			}
 
 			//Visual or combined
-			if ((pressedButton == 1) || (pressedButton == 2)) {
+			if ((pressedButton == 1) || (pressedButton == 2))
+			{
 				//If the visual camera is not working
 				if (!checkDiagnostic(diag_camera))
 				{
-					showFullMessage((char*)"Cam not connected", true);
+					showFullMessage((char*) "Cam not connected", true);
 					delay(1000);
 					return false;
 				}
 
 				//Show message
-				showFullMessage((char*)"Please wait..", true);
+				showFullMessage((char*) "Please wait..", true);
 
 				//Set camera resolution to streaming
 				camera_setDisplayRes();
@@ -1294,7 +1509,8 @@ bool modeMenu() {
 }
 
 /* HQ Resolution Menu */
-void hqResolutionMenu() {
+void hqResolutionMenu()
+{
 	drawTitle((char*) "HQ Resolution");
 	buttons_deleteAllButtons();
 	buttons_setTextFont(smallFont);
@@ -1307,28 +1523,35 @@ void hqResolutionMenu() {
 	else
 		buttons_setActive(0);
 	//Touch handler
-	while (true) {
+	while (true)
+	{
 		//touch pressed
-		if (touch_touched() == true) {
+		if (touch_touched() == true)
+		{
 			int pressedButton = buttons_checkButtons();
 			//Off
-			if (pressedButton == 0) {
-				if (hqRes) {
+			if (pressedButton == 0)
+			{
+				if (hqRes)
+				{
 					hqRes = false;
 					buttons_setActive(0);
 					buttons_setInactive(1);
 				}
 			}
 			//On
-			else if (pressedButton == 1) {
-				if (!hqRes) {
+			else if (pressedButton == 1)
+			{
+				if (!hqRes)
+				{
 					hqRes = true;
 					buttons_setActive(1);
 					buttons_setInactive(0);
 				}
 			}
 			//Save
-			else if (pressedButton == 2) {
+			else if (pressedButton == 2)
+			{
 				//Change camera resolution
 				if (displayMode == displayMode_thermal)
 					camera_setSaveRes();
@@ -1344,7 +1567,8 @@ void hqResolutionMenu() {
 }
 
 /* Draws the content of the main menu*/
-void drawMainMenu(byte pos) {
+void drawMainMenu(byte pos)
+{
 	//Border
 	drawMainMenuBorder();
 	//Background
@@ -1353,13 +1577,15 @@ void drawMainMenu(byte pos) {
 	//Buttons
 	buttons_deleteAllButtons();
 	//First page
-	if (pos == 0) {
+	if (pos == 0)
+	{
 		buttons_addButton(23, 28, 80, 80, icon1Bitmap, icon1Colors);
 		buttons_addButton(120, 28, 80, 80, icon2Bitmap, icon2Colors);
 		buttons_addButton(217, 28, 80, 80, icon3Bitmap, icon3Colors);
 	}
 	//Second page
-	if (pos == 1) {
+	if (pos == 1)
+	{
 		buttons_addButton(23, 28, 80, 80, icon4Bitmap, icon4Colors);
 		if (teensyVersion == teensyVersion_old)
 			buttons_addButton(120, 28, 80, 80, icon5Bitmap_1, icon5Colors);
@@ -1368,7 +1594,8 @@ void drawMainMenu(byte pos) {
 		buttons_addButton(217, 28, 80, 80, icon6Bitmap, icon6Colors);
 	}
 	//Third page
-	if (pos == 2) {
+	if (pos == 2)
+	{
 		buttons_addButton(23, 28, 80, 80, icon7Bitmap, icon7Colors);
 		if (teensyVersion == teensyVersion_old)
 			buttons_addButton(120, 28, 80, 80, icon8Bitmap_1, icon8Colors);
@@ -1377,7 +1604,8 @@ void drawMainMenu(byte pos) {
 		buttons_addButton(217, 28, 80, 80, icon9Bitmap, icon9Colors);
 	}
 	//Fourth page
-	if (pos == 3) {
+	if (pos == 3)
+	{
 		buttons_addButton(23, 28, 80, 80, icon10Bitmap, icon10Colors);
 		if (displayMode == displayMode_thermal)
 			buttons_addButton(120, 28, 80, 80, icon11_1Bitmap, icon11_1Colors);
@@ -1392,74 +1620,91 @@ void drawMainMenu(byte pos) {
 }
 
 /* Select the action when the select button is pressed */
-bool mainMenuSelect(byte pos, byte page) {
+bool mainMenuSelect(byte pos, byte page)
+{
 	//First page
-	if (page == 0) {
+	if (page == 0)
+	{
 		//Change color
-		if (pos == 0) {
+		if (pos == 0)
+		{
 			return colorMenu();
 		}
 		//Change mode
-		if (pos == 1) {
+		if (pos == 1)
+		{
 			return modeMenu();
 		}
 		//Temperature limits
-		if (pos == 2) {
+		if (pos == 2)
+		{
 			return tempLimits();
 		}
 	}
 	//Second page
-	if (page == 1) {
+	if (page == 1)
+	{
 		//Load menu
-		if (pos == 0) {
+		if (pos == 0)
+		{
 			loadFiles();
 		}
 		//File Transfer or Shutter
-		if (pos == 1) {
+		if (pos == 1)
+		{
 			if (teensyVersion == teensyVersion_old)
 				massStorage();
 			else
 				lepton_ffc(true);
 		}
 		//Settings
-		if (pos == 2) {
+		if (pos == 2)
+		{
 			settingsMenu();
 			settingsMenuHandler();
 		}
 	}
 	//Third page
-	if (page == 2) {
+	if (page == 2)
+	{
 		//Display options
-		if (pos == 0) {
+		if (pos == 0)
+		{
 			return liveDispMenu();
 		}
 		//Laser or HQ resolution
-		if (pos == 1) {
+		if (pos == 1)
+		{
 			if (teensyVersion == teensyVersion_old)
 				toggleLaser(true);
 			else
 				hqResolutionMenu();
 		}
 		//Toggle display
-		if (pos == 2) {
+		if (pos == 2)
+		{
 			toggleDisplay();
 		}
 	}
 	//Fourth page
-	if (page == 3) {
+	if (page == 3)
+	{
 		//Calibration
-		if (pos == 0) {
+		if (pos == 0)
+		{
 			return calibration();
 		}
 		//Isotherm or adjust visual
-		if (pos == 1) {
+		if (pos == 1)
+		{
 			if (displayMode == displayMode_thermal)
 				return hotColdMenu();
 			else
 				return adjustCombinedMenu();
 		}
 		//Points
-		if (pos == 2) {
+		if (pos == 2)
+		{
 			return tempPointsMenu();
 		}
 	}
@@ -1467,48 +1712,57 @@ bool mainMenuSelect(byte pos, byte page) {
 }
 
 /* Touch Handler for the Live Menu */
-void mainMenuHandler(byte* pos) {
+void mainMenuHandler(byte* pos)
+{
 	//Main loop
-	while (true) {
+	while (true)
+	{
 		//Check for screen sleep
 		if (screenOffCheck())
 			drawMainMenu(*pos);
 
 		//Touch screen pressed
-		if (touch_touched() == true) {
+		if (touch_touched() == true)
+		{
 			int pressedButton = buttons_checkButtons(true);
 			//FIRST BUTTON
-			if (pressedButton == 0) {
+			if (pressedButton == 0)
+			{
 				//Leave menu
 				if (mainMenuSelect(0, *pos))
 					break;
 			}
 			//SECOND BUTTON
-			if (pressedButton == 1) {
+			if (pressedButton == 1)
+			{
 				//Leave menu
 				if (mainMenuSelect(1, *pos))
 					break;
 			}
 			//THIRD BUTTON
-			if (pressedButton == 2) {
+			if (pressedButton == 2)
+			{
 				//Leave menu
 				if (mainMenuSelect(2, *pos))
 					break;
 			}
 			//BACKWARD
-			else if (pressedButton == 3) {
+			else if (pressedButton == 3)
+			{
 				if (*pos > 0)
 					*pos = *pos - 1;
 				else if (*pos == 0)
 					*pos = 3;
 			}
 			//EXIT
-			if (pressedButton == 4) {
-				showFullMessage((char*)"Please wait..", true);
+			if (pressedButton == 4)
+			{
+				showFullMessage((char*) "Please wait..", true);
 				return;
 			}
 			//FORWARD
-			else if (pressedButton == 5) {
+			else if (pressedButton == 5)
+			{
 				if (*pos < 3)
 					*pos = *pos + 1;
 				else if (*pos == 3)
@@ -1520,7 +1774,8 @@ void mainMenuHandler(byte* pos) {
 }
 
 /* Start live menu */
-void mainMenu() {
+void mainMenu()
+{
 	//Set show menu to opened
 	showMenu = showMenu_opened;
 
