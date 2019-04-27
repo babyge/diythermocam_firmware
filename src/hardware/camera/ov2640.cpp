@@ -1,17 +1,17 @@
 /*
-*
-* OV2640 - Driver for the Arducam camera module
-*
-* DIY-Thermocam Firmware
-*
-* GNU General Public License v3.0
-*
-* Copyright by Max Ritter
-*
-* http://www.diy-thermocam.net
-* https://github.com/maxritter/DIY-Thermocam
-*
-*/
+ *
+ * OV2640 - Driver for the Arducam camera module
+ *
+ * DIY-Thermocam Firmware
+ *
+ * GNU General Public License v3.0
+ *
+ * Copyright by Max Ritter
+ *
+ * http://www.diy-thermocam.net
+ * https://github.com/maxritter/DIY-Thermocam
+ *
+ */
 
 /*################################# INCLUDES ##################################*/
 
@@ -29,7 +29,8 @@
 
 /* Sensor related definitions */
 
-#define SPISPEED 4000000
+#define SPISPEED_OLD 4000000
+#define SPISPEED_NEW 12000000
 #define BMP 0
 #define JPEG 1
 #define OV2640_ADDRESS 0x60
@@ -83,6 +84,11 @@
 #define FIFO_SIZE2 0x43
 #define FIFO_SIZE3 0x44
 
+/*############################# PUBLIC VARIABLES ##############################*/
+
+//The used SPI speed
+int spi_speed;
+
 /*######################## PUBLIC FUNCTION BODIES #############################*/
 
 /* I2C Write 8bit address, 8bit data */
@@ -118,8 +124,7 @@ int ov2640_wrSensorRegs8_8(const struct sensor_reg* reglist) {
 	uint16_t reg_addr = 0;
 	uint16_t reg_val = 0;
 	const struct sensor_reg *next = reglist;
-	while ((reg_addr != 0xff) | (reg_val != 0xff))
-	{
+	while ((reg_addr != 0xff) | (reg_val != 0xff)) {
 		reg_addr = pgm_read_word(&next->reg);
 		reg_val = pgm_read_word(&next->val);
 		ov2640_wrSensorReg8_8(reg_addr, reg_val);
@@ -135,7 +140,7 @@ void ov2640_busWrite(int address, int value) {
 	CORE_PIN8_CONFIG = PORT_PCR_MUX(2);
 	CORE_PIN12_CONFIG = PORT_PCR_MUX(1);
 	//Take the SS pin low to select the chip
-	SPI.beginTransaction(SPISettings(SPISPEED, MSBFIRST, SPI_MODE0));
+	SPI.beginTransaction(SPISettings(spi_speed, MSBFIRST, SPI_MODE0));
 	digitalWriteFast(pin_cam_cs, LOW);
 	//Send in the address and value via SPI
 	SPI.transfer(address);
@@ -154,7 +159,7 @@ uint8_t ov2640_busRead(int address) {
 	CORE_PIN8_CONFIG = PORT_PCR_MUX(2);
 	CORE_PIN12_CONFIG = PORT_PCR_MUX(1);
 	//Take the SS pin low to select the chip
-	SPI.beginTransaction(SPISettings(SPISPEED, MSBFIRST, SPI_MODE0));
+	SPI.beginTransaction(SPISettings(spi_speed, MSBFIRST, SPI_MODE0));
 	digitalWriteFast(pin_cam_cs, LOW);
 	//Send in the address and value via SPI
 	SPI.transfer(address);
@@ -187,17 +192,28 @@ bool ov2640_init(void) {
 	uint8_t vid, pid;
 
 	//Test SPI connection first
+	spi_speed = SPISPEED_OLD;
 	ov2640_writeReg(ARDUCHIP_TEST1, 0x55);
 	uint8_t rtnVal = ov2640_readReg(ARDUCHIP_TEST1);
 	if (rtnVal != 0x55)
-		retVal = false;
+	{
+		spi_speed = SPISPEED_NEW;
+		ov2640_writeReg(ARDUCHIP_TEST1, 0x55);
+		uint8_t rtnVal = ov2640_readReg(ARDUCHIP_TEST1);
+		if (rtnVal != 0x55)
+		{
+			retVal = false;
+		}
+	}
 
 	//Test I2C connection second
 	ov2640_wrSensorReg8_8(0xff, 0x01);
 	ov2640_rdSensorReg8_8(OV2640_CHIPID_HIGH, &vid);
 	ov2640_rdSensorReg8_8(OV2640_CHIPID_LOW, &pid);
 	if ((vid != 0x26) || ((pid != 0x42) && (pid != 0x41)))
+	{
 		retVal = false;
+	}
 
 	//Init registers
 	ov2640_wrSensorReg8_8(0xff, 0x01);
@@ -237,8 +253,7 @@ void ov2640_setFormat(byte fmt) {
 
 /* Set the JPEG pixel size of the image */
 void ov2640_setJPEGSize(uint8_t size) {
-	switch (size)
-	{
+	switch (size) {
 	case OV2640_160x120:
 		ov2640_wrSensorRegs8_8(OV2640_160x120_JPEG);
 		break;
@@ -287,7 +302,7 @@ void ov2640_startFifoBurst(void) {
 	CORE_PIN8_CONFIG = PORT_PCR_MUX(2);
 	CORE_PIN12_CONFIG = PORT_PCR_MUX(1);
 	startAltClockline();
-	SPI.beginTransaction(SPISettings(SPISPEED, MSBFIRST, SPI_MODE0));
+	SPI.beginTransaction(SPISettings(spi_speed, MSBFIRST, SPI_MODE0));
 	digitalWriteFast(pin_cam_cs, LOW);
 	SPI.transfer(BURST_FIFO_READ);
 }
@@ -325,9 +340,8 @@ uint8_t ov2640_getBit(uint8_t addr, uint8_t bit) {
 
 /* Set ArduCAM working mode */
 void ov2640_setMode(uint8_t mode) {
-	switch (mode)
-	{
-		//MCU2LCD_MODE: MCU writes the LCD screen GRAM
+	switch (mode) {
+	//MCU2LCD_MODE: MCU writes the LCD screen GRAM
 	case MCU2LCD_MODE:
 		ov2640_writeReg(ARDUCHIP_MODE, MCU2LCD_MODE);
 		break;
@@ -379,9 +393,8 @@ void ov2640_capture(void) {
 }
 
 /* Transfer the JPEG data from the OV2640 */
-void ov2640_transfer(uint8_t * jpegData, boolean stream, uint32_t* length)
-{
-repeat:
+void ov2640_transfer(uint8_t * jpegData, boolean stream, uint32_t* length) {
+	repeat:
 
 	//Count variable
 	uint32_t counter = 0;
@@ -394,11 +407,9 @@ repeat:
 	boolean is_header = 0;
 
 	//Repeat as long as needed
-	while (counter < *length)
-	{
+	while (counter < *length) {
 		//If main menu should be entered
-		if (showMenu == showMenu_desired)
-		{
+		if (showMenu == showMenu_desired) {
 			//Stop FIFO Burst
 			ov2640_endFifoBurst();
 			//Go back
@@ -411,15 +422,13 @@ repeat:
 		temp = SPI.transfer(0x00);
 
 		//Normal bytestream
-		if (is_header)
-		{
+		if (is_header) {
 			jpegData[counter] = temp;
 			counter++;
 		}
 
 		//Start byte sqeuence
-		else if ((temp == 0xD8) & (temp_last == 0xFF))
-		{
+		else if ((temp == 0xD8) & (temp_last == 0xFF)) {
 			is_header = 1;
 			jpegData[0] = temp_last;
 			jpegData[1] = temp;
@@ -427,18 +436,15 @@ repeat:
 		}
 
 		//If rotation enabled and saving / sending, include EXIF header
-		if ((counter == 20) && (!stream) && (rotationVert))
-		{
-			for (uint8_t i = 0; i < 100; i++)
-			{
+		if ((counter == 20) && (!stream) && (rotationVert)) {
+			for (uint8_t i = 0; i < 100; i++) {
 				jpegData[counter + i] = exifHeader_rotated[i];
 			}
 			counter += 100;
 		}
 
 		//End byte sequence
-		if (((temp == 0xD9) && (temp_last == 0xFF)))
-		{
+		if (((temp == 0xD9) && (temp_last == 0xFF))) {
 			//Stop FIFO Burst
 			ov2640_endFifoBurst();
 
@@ -454,8 +460,7 @@ repeat:
 	ov2640_endFifoBurst();
 
 	//Get a new frame for stream
-	if (stream)
-	{
+	if (stream) {
 		//Send capture command
 		camera_capture();
 

@@ -19,9 +19,9 @@ This guide should work on **all common operating systems** (**Windows, Linux & M
 
 **Download** and **install** the following programs:
 
-1. **[Arduino 1.8.6+](https://www.arduino.cc/en/Main/Software)**
-2. **[Teensyduino 1.43+](https://www.pjrc.com/teensy/td_download.html)**
-3. **[Sloeber Eclipse](https://github.com/Sloeber/arduino-eclipse-plugin/releases/tag/4_2)**
+1. **[Arduino 1.8.9+](https://www.arduino.cc/en/Main/Software)** (install to a short path like C:\Dev\Arduino)
+2. **[Teensyduino 1.44+](https://www.pjrc.com/teensy/td_download.html)**
+3. **[Sloeber Eclipse](https://github.com/Sloeber/arduino-eclipse-plugin/releases/tag/4_2)** (linked version 4.2 works)
 
 Then **clone this repo** to a path without empty spaces (f. ex. "C:\Sandbox\DIYThermocam_Firmware\") with `git clone https://github.com/maxritter/diythermocam_firmware.git`.
 

@@ -34,7 +34,7 @@
 		<link>
 			<name>core/core</name>
 			<type>2</type>
-			<location>C:/Program Files (x86)/Arduino/hardware/teensy/avr/cores/teensy3</location>
+			<location>C:/Dev/Arduino/hardware/teensy/avr/cores/teensy3</location>
 		</link>
 	</linkedResources>
 </projectDescription>
