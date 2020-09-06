@@ -11,10 +11,6 @@ If you just want to flash the newest version of the firmware to your device, fol
 
 ----------
 
-You can find **older firmware versions prior to 2.46** here: **[http://diy-thermocam.bplaced.net/Firmware/](http://diy-thermocam.bplaced.net/Firmware/)**
-
-----------
-
 This guide should work on **all common operating systems** (**Windows, Linux & Mac OSX**).
 
 **Download** and **install** the following programs:
